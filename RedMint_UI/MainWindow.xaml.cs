@@ -23,6 +23,13 @@ namespace RedMint_UI
         public MainWindow()
         {
             InitializeComponent();
+            SetDefaults();
+        }
+
+        private void SetDefaults()
+        {
+            input_direccion.Text = string.Empty;
+            input_directorio_salida.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
         }
 
         private void btn_directorio_salida_Click(object sender, RoutedEventArgs e)
