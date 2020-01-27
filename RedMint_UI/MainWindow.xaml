@@ -5,8 +5,13 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RedMint_UI"
         mc:Ignorable="d"
-        Title="MainWindow" Height="450" Width="800">
-    <Grid>
-
+        Title="RedMint" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal" SizeToContent="WidthAndHeight">
+    <Grid Background="#FF282828" Width="280" Height="178">
+        <Label Content="Dirección:" HorizontalAlignment="Left" Margin="10,10,0,0" VerticalAlignment="Top" Foreground="#FFF1F1F1"/>
+        <TextBox x:Name="input_direccion" Margin="10,36,0,0" Text="TextBox" TextWrapping="Wrap" TextAlignment="Left" Height="22" VerticalAlignment="Top" HorizontalAlignment="Left" Width="260"/>
+        <Label Content="Directorio de salida:" HorizontalAlignment="Left" Margin="10,63,0,0" VerticalAlignment="Top" Foreground="#FFF1F1F1"/>
+        <TextBox Margin="10,89,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="225"/>
+        <Button Content="..." Margin="240,89,0,0" VerticalAlignment="Top" Height="22" HorizontalAlignment="Left" Width="30"/>
+        <Button Content="Descargar" Margin="144,128,0,0" Background="Red" BorderBrush="#FFBB0000" Foreground="White" FontWeight="DemiBold" HorizontalAlignment="Left" Width="126" Height="24" VerticalAlignment="Top"/>
     </Grid>
 </Window>
