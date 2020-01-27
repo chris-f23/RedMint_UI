@@ -20,14 +20,16 @@ namespace RedMint_UI
 
     public class DownloadController : IDownloadController
     {
-        public void DownloadAudio(string url, DownloadQuality quality)
-        {
-            throw new NotImplementedException();
-        }
-
         public void DownloadVideo(string url, DownloadQuality quality)
         {
             throw new NotImplementedException();
+
+        }
+
+        public void DownloadAudio(string url, DownloadQuality quality)
+        {
+            throw new NotImplementedException();
+
         }
     }
 }
