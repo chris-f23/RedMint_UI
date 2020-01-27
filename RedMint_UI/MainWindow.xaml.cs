@@ -24,5 +24,21 @@ namespace RedMint_UI
         {
             InitializeComponent();
         }
+
+        private void btn_directorio_salida_Click(object sender, RoutedEventArgs e)
+        {
+            // Abre un dialogo para seleccionar el directorio de salida.
+            // Una vez seleccionado, se guarda la ruta del directorio en
+            // el control "input_directorio_salida".
+
+            var fbd = new WPFFolderBrowser.WPFFolderBrowserDialog
+            {
+                InitialDirectory = Environment.GetFolderPath(Environment.SpecialFolder.Desktop)
+            };
+
+            if (fbd.ShowDialog().Value == true) {
+                input_directorio_salida.Text = fbd.FileName;
+            }
+        }
     }
 }
