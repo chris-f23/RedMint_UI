@@ -7,9 +7,9 @@ namespace RedMint_UI
 {
     public enum DownloadQuality
     {
-        Low,
+        High,
         Medium,
-        High
+        Low
     }
 
     interface IDownloadController
@@ -20,16 +20,21 @@ namespace RedMint_UI
 
     public class DownloadController : IDownloadController
     {
-        public void DownloadVideo(string url, DownloadQuality quality)
+        private string ParseUrl(string url) 
         {
             throw new NotImplementedException();
+        }
+
+        public void DownloadVideo(string url, DownloadQuality quality)
+        {
+            IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(url);
+
 
         }
 
         public void DownloadAudio(string url, DownloadQuality quality)
         {
             throw new NotImplementedException();
-
         }
     }
 }

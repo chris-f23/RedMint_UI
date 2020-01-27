@@ -6,12 +6,28 @@
         xmlns:local="clr-namespace:RedMint_UI"
         mc:Ignorable="d"
         Title="RedMint" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal" SizeToContent="WidthAndHeight" FontFamily="Product Sans">
-    <Grid Background="#FF282828" Width="480" Height="210">
+    <Grid Background="#FF282828" Width="480" Height="362.1">
         <Label x:Name="lbl_direccion" Content="Dirección:" Margin="20,10,0,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" HorizontalAlignment="Left" Width="82" Height="30"/>
         <TextBox x:Name="input_direccion" Margin="20,40,0,0" Text="TextBox" TextWrapping="Wrap" TextAlignment="Left" VerticalAlignment="Top" FontFamily="Lato" FontSize="16" MaxLines="1" RenderTransformOrigin="0.5,0.5" Height="28" HorizontalAlignment="Left" Width="440"/>
-        <Label x:Name="lbl_directorio_salida" Content="Directorio de salida:" Margin="20,76,309,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
-        <TextBox x:Name="input_directorio_salida" Margin="20,106,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="325" FontFamily="Lato" FontSize="16" MaxLines="1" Height="28"/>
-        <Button x:Name="btn_directorio_salida" Content="Seleccionar" Margin="0,106,20,0" VerticalAlignment="Top" FontFamily="Lato" Click="btn_directorio_salida_Click" HorizontalAlignment="Right" Width="110" FontSize="16" Height="28"/>
-        <Button x:Name="btn_descargar" Content="Descargar" Margin="110,0,110,20" Background="Red" BorderBrush="#FFBB0000" Foreground="White" FontWeight="DemiBold" FontStretch="Expanded" FontSize="14" FontFamily="Lato" ClickMode="Press" RenderTransformOrigin="0.5,0.001" Height="30" VerticalAlignment="Bottom"/>
+
+        <Label x:Name="lbl_directorio_salida" Content="Directorio de salida:" Margin="20,78,309,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
+        <TextBox x:Name="input_directorio_salida" Margin="20,108,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="325" FontFamily="Lato" FontSize="16" MaxLines="1" Height="28"/>
+        <Button x:Name="btn_directorio_salida" Content="Seleccionar" Margin="0,108,20,0" VerticalAlignment="Top" FontFamily="Lato" Click="btn_directorio_salida_Click" HorizontalAlignment="Right" Width="109" FontSize="16" Height="28"/>
+
+        <Label x:Name="lbl_calidad" Content="Calidad:" Margin="20,214,384,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
+        <ComboBox x:Name="cbb_formato" HorizontalAlignment="Left" Margin="20,176,0,0" VerticalAlignment="Top" Width="120" FontSize="16" Height="28"/>
+
+        <Label x:Name="lbl_formato" Content="Formato:" Margin="20,146,384,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
+        <ComboBox x:Name="cbb_calidad" HorizontalAlignment="Left" Margin="20,244,0,0" VerticalAlignment="Top" Width="120" FontSize="16" Height="28"/>
+
+        <Button x:Name="btn_descargar" Content="Descargar" Margin="110,297,110,0" Background="Red" BorderBrush="#FFBB0000" Foreground="White" FontWeight="DemiBold" FontStretch="Expanded" FontSize="14" FontFamily="Lato" ClickMode="Press" RenderTransformOrigin="0.5,0.001" Height="30" VerticalAlignment="Top"/>
+        <ProgressBar x:Name="pgb_progress" Margin="0,2,0,0" Height="10" VerticalAlignment="Bottom" Value="50">
+            <ProgressBar.Foreground>
+                <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
+                    <GradientStop Color="#FFBB0000"/>
+                    <GradientStop Color="Red" Offset="1"/>
+                </LinearGradientBrush>
+            </ProgressBar.Foreground>
+        </ProgressBar>
     </Grid>
 </Window>

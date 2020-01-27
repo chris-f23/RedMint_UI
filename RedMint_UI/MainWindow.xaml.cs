@@ -20,16 +20,22 @@ namespace RedMint_UI
     /// </summary>
     public partial class MainWindow : Window
     {
+        private IDownloadController downloadController;
+
         public MainWindow()
         {
             InitializeComponent();
-            SetDefaults();
+            InitializeControls();
+            downloadController = new DownloadController();
         }
 
-        private void SetDefaults()
+        private void InitializeControls()
         {
+            // inputs:
             input_direccion.Text = string.Empty;
             input_directorio_salida.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
+
+            cbb_calidad.ItemsSource = Enum.GetValues(typeof(DownloadQuality));
         }
 
         private void btn_directorio_salida_Click(object sender, RoutedEventArgs e)
