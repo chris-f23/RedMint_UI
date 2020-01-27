@@ -47,5 +47,10 @@ namespace RedMint_UI
                 input_directorio_salida.Text = fbd.FileName;
             }
         }
+
+        private void btn_descargar_Click(object sender, RoutedEventArgs e)
+        {
+
+        }
     }
 }
