@@ -1,21 +1,20 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
+using System.Linq;
 using System.Text;
+using System.Threading.Tasks;
 using YoutubeExtractor;
 
 namespace RedMint_UI
 {
-    public enum DownloadQuality
-    {
-        High,
-        Medium,
-        Low
-    }
+    // private enum DownloadOutputFormat { };
+    
 
     interface IDownloadController
     {
-        void DownloadVideo(string url, DownloadQuality quality);
-        void DownloadAudio(string url, DownloadQuality quality);
+        VideoDownloader ObtenerVideoDownloader(string url, string directorioSalida);
+        AudioDownloader ObtenerAudioDownloader(string url, string directorioSalida);
     }
 
     public class DownloadController : IDownloadController
@@ -25,14 +24,30 @@ namespace RedMint_UI
             throw new NotImplementedException();
         }
 
-        public void DownloadVideo(string url, DownloadQuality quality)
+        public VideoDownloader ObtenerVideoDownloader(string url, string directorioSalida)
         {
-            IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(url);
+            IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(url, false);
 
+            // Obtener el video con la mejor calidad.
+            VideoInfo video = videoInfos
+                .Where( info => info.VideoType == VideoType.Mp4)
+                .OrderByDescending( info => info.Resolution)
+                .First();
+            
+            // Desencriptar de ser necesario.
+            if (video.RequiresDecryption)
+            {
+                DownloadUrlResolver.DecryptDownloadUrl(video);
+            }
+            
+            // Crear el descargador.
+            var directorioFinal = Path.Combine(directorioSalida, video.Title + video.VideoExtension);
+            var videoDownloader = new VideoDownloader(video, directorioFinal);
 
+            return videoDownloader;
         }
 
-        public void DownloadAudio(string url, DownloadQuality quality)
+        public AudioDownloader ObtenerAudioDownloader(string url, string directorioSalida)
         {
             throw new NotImplementedException();
         }

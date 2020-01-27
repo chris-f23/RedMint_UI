@@ -20,7 +20,7 @@
         <Label x:Name="lbl_formato" Content="Formato:" Margin="20,146,384,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
         <ComboBox x:Name="cbb_calidad" HorizontalAlignment="Left" Margin="20,244,0,0" VerticalAlignment="Top" Width="120" FontSize="16" Height="28"/>
 
-        <Button x:Name="btn_descargar" Content="Descargar" Margin="110,297,110,0" Background="Red" BorderBrush="#FFBB0000" Foreground="White" FontWeight="DemiBold" FontStretch="Expanded" FontSize="14" FontFamily="Lato" ClickMode="Press" RenderTransformOrigin="0.5,0.001" Height="30" VerticalAlignment="Top"/>
+        <Button x:Name="btn_descargar" Content="Descargar" Margin="110,297,110,0" Background="Red" BorderBrush="#FFBB0000" Foreground="White" FontWeight="DemiBold" FontStretch="Expanded" FontSize="14" FontFamily="Lato" ClickMode="Press" RenderTransformOrigin="0.5,0.001" Height="30" VerticalAlignment="Top" Click="btn_descargar_Click"/>
         <ProgressBar x:Name="pgb_progress" Margin="0,2,0,0" Height="10" VerticalAlignment="Bottom" Value="50">
             <ProgressBar.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">

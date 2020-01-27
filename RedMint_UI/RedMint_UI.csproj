@@ -8,7 +8,10 @@
 
   <ItemGroup>
     <PackageReference Include="WPFFolderBrowser" Version="1.0.2" />
-    <PackageReference Include="YoutubeExtractor" Version="0.10.11" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\YoutubeExtractor\YoutubeExtractor.csproj" />
   </ItemGroup>
 
 </Project>

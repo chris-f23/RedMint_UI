@@ -16,26 +16,41 @@ using System.Windows.Shapes;
 namespace RedMint_UI
 {
     /// <summary>
+    public enum Calidad { Alta, Media, Baja }
+    public enum Formato { Audio, Video }
+    
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+
         private IDownloadController downloadController;
 
         public MainWindow()
         {
             InitializeComponent();
             InitializeControls();
-            downloadController = new DownloadController();
         }
 
         private void InitializeControls()
         {
-            // inputs:
+            // Inputs:
             input_direccion.Text = string.Empty;
             input_directorio_salida.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-            cbb_calidad.ItemsSource = Enum.GetValues(typeof(DownloadQuality));
+            // Comboboxes:
+            // cbb_calidad.ItemsSource = Enum.GetValues(typeof(Calidad));
+            cbb_formato.ItemsSource = Enum.GetValues(typeof(Formato));
+            cbb_formato.SelectedIndex = 0;
+
+            // Progressbar:
+            pgb_progress.Value = 0;
+
+            // Controlador de Descargas:
+            if (downloadController == null)
+            {
+                downloadController = new DownloadController();
+            }
         }
 
         private void btn_directorio_salida_Click(object sender, RoutedEventArgs e)
@@ -56,7 +71,29 @@ namespace RedMint_UI
 
         private void btn_descargar_Click(object sender, RoutedEventArgs e)
         {
+            switch ((Formato) cbb_formato.SelectedValue)
+            {
+                case Formato.Audio:
+                    var audioDownloader = downloadController.ObtenerAudioDownloader(input_direccion.Text, input_directorio_salida.Text);
+                    audioDownloader.Execute();
 
+                    break;
+                case Formato.Video:
+                    var videoDownloader = downloadController.ObtenerVideoDownloader(input_direccion.Text, input_directorio_salida.Text);
+
+                    videoDownloader.DownloadProgressChanged += (sender, args) => UpdateProgressBar(args.ProgressPercentage);
+                    videoDownloader.Execute();
+
+                    break;
+                default:
+                    input_direccion.Text = "Error, formato no seleccionado";
+                    break;
+            }
+        }
+
+        private void UpdateProgressBar(double pogressPercentage)
+        {
+            pgb_progress.Value = pogressPercentage;
         }
     }
 }
