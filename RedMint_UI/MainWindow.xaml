@@ -6,22 +6,25 @@
         xmlns:local="clr-namespace:RedMint_UI"
         mc:Ignorable="d"
         Title="RedMint" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal" SizeToContent="WidthAndHeight" FontFamily="Product Sans">
-    <Grid Background="#FF282828" Width="480" Height="362.1">
+    <Grid Background="#FF282828" Width="480" Height="325">
         <Label x:Name="lbl_direccion" Content="Dirección:" Margin="20,10,0,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" HorizontalAlignment="Left" Width="82" Height="30"/>
-        <TextBox x:Name="input_direccion" Margin="20,40,0,0" Text="TextBox" TextWrapping="Wrap" TextAlignment="Left" VerticalAlignment="Top" FontFamily="Lato" FontSize="16" MaxLines="1" RenderTransformOrigin="0.5,0.5" Height="28" HorizontalAlignment="Left" Width="440"/>
+        <TextBox x:Name="input_direccion" Margin="20,40,0,0" Text="https://www.youtube.com/watch?v=..." TextWrapping="NoWrap" TextAlignment="Left" VerticalAlignment="Top" FontFamily="Lato" FontSize="16" MaxLines="1" RenderTransformOrigin="0.5,0.5" Height="28" HorizontalAlignment="Left" Width="325"/>
+        <Button x:Name="btn_buscar" Content="Buscar" Margin="351,40,20,0" Background="Red" BorderBrush="#FFBB0000" Foreground="White" FontWeight="DemiBold" FontStretch="Expanded" FontSize="14" FontFamily="Lato" ClickMode="Press" RenderTransformOrigin="0.5,0.001" Height="30" VerticalAlignment="Top" Click="btn_buscar_Click"/>
 
-        <Label x:Name="lbl_directorio_salida" Content="Directorio de salida:" Margin="20,78,309,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
-        <TextBox x:Name="input_directorio_salida" Margin="20,108,0,0" Text="TextBox" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="325" FontFamily="Lato" FontSize="16" MaxLines="1" Height="28"/>
-        <Button x:Name="btn_directorio_salida" Content="Seleccionar" Margin="0,108,20,0" VerticalAlignment="Top" FontFamily="Lato" Click="btn_directorio_salida_Click" HorizontalAlignment="Right" Width="109" FontSize="16" Height="28"/>
+        <Grid HorizontalAlignment="Center" Height="50" Margin="0,88,0,0" VerticalAlignment="Top" Width="440">
+            <Rectangle Fill="#FF1C1C1C" RadiusX="5" RadiusY="5"/>
+            <TextBlock x:Name="tb_video_title" Text="TextBlock" TextWrapping="NoWrap" Margin="10,10,10,10" FontSize="20" FontWeight="Medium" Foreground="White" FontStretch="Expanded" TextAlignment="Center"/>
+        </Grid>
 
-        <Label x:Name="lbl_calidad" Content="Calidad:" Margin="20,214,384,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
-        <ComboBox x:Name="cbb_formato" HorizontalAlignment="Left" Margin="20,176,0,0" VerticalAlignment="Top" Width="120" FontSize="16" Height="28"/>
+        <Label x:Name="lbl_formato" Content="Formato:" Margin="20,192,380,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
+        <ComboBox x:Name="cbb_formato" HorizontalAlignment="Left" Margin="20,222,0,0" VerticalAlignment="Top" Width="80" FontSize="16" Height="28"/>
 
-        <Label x:Name="lbl_formato" Content="Formato:" Margin="20,146,384,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
-        <ComboBox x:Name="cbb_calidad" HorizontalAlignment="Left" Margin="20,244,0,0" VerticalAlignment="Top" Width="120" FontSize="16" Height="28"/>
+        <Label x:Name="lbl_directorio_salida" Content="Directorio de salida:" Margin="115,192,214,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
+        <TextBox x:Name="input_directorio_salida" Margin="115,222,0,0" Text="C:\Users\Usuario\Desktop" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="300" FontFamily="Lato" FontSize="16" MaxLines="1" Height="28"/>
+        <Button x:Name="btn_directorio_salida" Content="..." Margin="0,222,20,0" VerticalAlignment="Top" FontFamily="Lato" Click="btn_directorio_salida_Click" HorizontalAlignment="Right" Width="40" FontSize="16" Height="28"/>
 
-        <Button x:Name="btn_descargar" Content="Descargar" Margin="110,297,110,0" Background="Red" BorderBrush="#FFBB0000" Foreground="White" FontWeight="DemiBold" FontStretch="Expanded" FontSize="14" FontFamily="Lato" ClickMode="Press" RenderTransformOrigin="0.5,0.001" Height="30" VerticalAlignment="Top" Click="btn_descargar_Click"/>
-        <ProgressBar x:Name="pgb_progress" Margin="0,2,0,0" Height="10" VerticalAlignment="Bottom" Value="50">
+        <Button x:Name="btn_descargar" Content="Descargar" Margin="230,0,20,25" Background="Red" BorderBrush="#FFBB0000" Foreground="White" FontWeight="DemiBold" FontStretch="Expanded" FontSize="14" FontFamily="Lato" ClickMode="Press" RenderTransformOrigin="0.5,0.001" Height="30" VerticalAlignment="Bottom" Click="btn_descargar_ClickAsync"/>
+        <ProgressBar x:Name="pgb_progress" Margin="0,2,0,0" Height="10" VerticalAlignment="Bottom" Value="50" Background="#FF1C1C1C" BorderBrush="#FF1C1C1C">
             <ProgressBar.Foreground>
                 <LinearGradientBrush EndPoint="0.5,1" StartPoint="0.5,0">
                     <GradientStop Color="#FFBB0000"/>

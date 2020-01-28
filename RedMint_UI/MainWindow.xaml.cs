@@ -23,7 +23,7 @@ namespace RedMint_UI
     /// </summary>
     public partial class MainWindow : Window
     {
-
+        private VideoData data;
         private IDownloadController downloadController;
 
         public MainWindow()
@@ -44,7 +44,13 @@ namespace RedMint_UI
             cbb_formato.SelectedIndex = 0;
 
             // Progressbar:
-            pgb_progress.Value = 0;
+            pgb_progress.Value = 100;
+
+            // Textbox:
+            tb_video_title.Text = string.Empty;
+
+            // Button:
+            btn_descargar.IsEnabled = false;
 
             // Controlador de Descargas:
             if (downloadController == null)
@@ -69,31 +75,70 @@ namespace RedMint_UI
             }
         }
 
-        private void btn_descargar_Click(object sender, RoutedEventArgs e)
+        private void btn_buscar_Click(object sender, RoutedEventArgs e)
+        {
+            this.data = downloadController.BuscarVideo(input_direccion.Text);
+
+            if (data != null)
+            {
+                tb_video_title.Text = data.Titulo;
+                btn_descargar.IsEnabled = true;
+            }
+            else {
+                ShowErrorMessage("No se encontro el video con la direccion ingresada.");
+                input_direccion.Text = string.Empty;
+            }
+        }
+
+        private async void btn_descargar_ClickAsync(object sender, RoutedEventArgs e)
         {
             switch ((Formato) cbb_formato.SelectedValue)
             {
                 case Formato.Audio:
-                    var audioDownloader = downloadController.ObtenerAudioDownloader(input_direccion.Text, input_directorio_salida.Text);
-                    audioDownloader.Execute();
-
-                    break;
-                case Formato.Video:
-                    var videoDownloader = downloadController.ObtenerVideoDownloader(input_direccion.Text, input_directorio_salida.Text);
-
-                    videoDownloader.DownloadProgressChanged += (sender, args) => UpdateProgressBar(args.ProgressPercentage);
-                    videoDownloader.Execute();
+                    try
+                    {
+                        btn_descargar.IsEnabled = false;
+                        await DescargarAudio();
+                        ShowSuccessMessage("Descarga completada!");
+                    }
+                    catch (Exception)
+                    {
+                        ShowErrorMessage("Ocurrio un error al descargar el video...");
+                    }
 
                     break;
                 default:
-                    input_direccion.Text = "Error, formato no seleccionado";
-                    break;
+                    ShowErrorMessage("Error, formato no seleccionado.");
+                    return;
             }
+
+            this.data = null;
+            tb_video_title.Text = string.Empty;
         }
 
-        private void UpdateProgressBar(double pogressPercentage)
+        private async Task DescargarAudio()
         {
-            pgb_progress.Value = pogressPercentage;
+            var videoDownloader = downloadController.DescargarAudio(this.data, input_directorio_salida.Text);
+
+            var progress = new Progress<int>(value => pgb_progress.Value = value);
+            videoDownloader.DownloadProgressChanged += (sender, args) => UpdateProgressBar(progress, args.ProgressPercentage);
+            
+            await Task.Run(() => videoDownloader.Execute());
+        }
+
+        private void UpdateProgressBar(Progress<int> progress, double value)
+        {
+            ((IProgress<int>)progress).Report((int) value);
+        }
+
+        private void ShowErrorMessage(string message)
+        {
+            MessageBox.Show(message, "Error", MessageBoxButton.OK, MessageBoxImage.Warning);
+        }
+
+        private void ShowSuccessMessage(string message)
+        {
+            MessageBox.Show(message, "Informacion", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }

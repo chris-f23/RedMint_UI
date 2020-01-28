@@ -8,46 +8,70 @@ using YoutubeExtractor;
 
 namespace RedMint_UI
 {
-    // private enum DownloadOutputFormat { };
-    
+    public class VideoData
+    {
+        public string Titulo { get; set; }
+        public IEnumerable<VideoInfo> LinksDisponibles { get; set; }
+    }
 
     interface IDownloadController
     {
-        VideoDownloader ObtenerVideoDownloader(string url, string directorioSalida);
-        AudioDownloader ObtenerAudioDownloader(string url, string directorioSalida);
+        VideoData BuscarVideo(string url);
+        VideoDownloader DescargarVideo(VideoData videoData, string directorioSalida);
+        VideoDownloader DescargarAudio(VideoData videoData, string directorioSalida);
     }
 
     public class DownloadController : IDownloadController
     {
-        private string ParseUrl(string url) 
+        public VideoData BuscarVideo(string url) 
         {
-            throw new NotImplementedException();
-        }
-
-        public VideoDownloader ObtenerVideoDownloader(string url, string directorioSalida)
-        {
-            IEnumerable<VideoInfo> videoInfos = DownloadUrlResolver.GetDownloadUrls(url, false);
-
-            // Obtener el video con la mejor calidad.
-            VideoInfo video = videoInfos
-                .Where( info => info.VideoType == VideoType.Mp4)
-                .OrderByDescending( info => info.Resolution)
-                .First();
-            
-            // Desencriptar de ser necesario.
-            if (video.RequiresDecryption)
+            try
             {
-                DownloadUrlResolver.DecryptDownloadUrl(video);
-            }
-            
-            // Crear el descargador.
-            var directorioFinal = Path.Combine(directorioSalida, video.Title + video.VideoExtension);
-            var videoDownloader = new VideoDownloader(video, directorioFinal);
+                var videoInfos = DownloadUrlResolver.GetDownloadUrls(url, false);
 
-            return videoDownloader;
+                return new VideoData()
+                {
+                    Titulo = videoInfos.First().Title,
+                    LinksDisponibles = videoInfos
+                };
+            }
+            catch (Exception)
+            {
+                return null;
+            }
         }
 
-        public AudioDownloader ObtenerAudioDownloader(string url, string directorioSalida)
+        public VideoDownloader DescargarAudio(VideoData videoData, string directorioSalida)
+        {
+            // https://github.com/flagbug/YoutubeExtractor/issues/246
+            // AudioDownloader esta obsoleto.
+            try
+            {
+                // https://github.com/jphellemons/YoutubeExtractor/blob/805926ebdb521a79439dd4c321101a2d97c20858/readme.md
+                VideoInfo link = videoData.LinksDisponibles
+                    .Where(info => info.VideoType == VideoType.Mp4 && info.Resolution == 0)
+                    .OrderByDescending(info => info.AudioBitrate)
+                    .First();
+
+                // Desencriptar de ser necesario.
+                if (link.RequiresDecryption)
+                {
+                    DownloadUrlResolver.DecryptDownloadUrl(link);
+                }
+
+                // Crear el descargador.
+                var directorioFinal = Path.Combine(directorioSalida, link.Title + ".mp3");
+                var videoDownloader = new VideoDownloader(link, directorioFinal);
+
+                return videoDownloader;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
+        }
+
+        public VideoDownloader DescargarVideo(VideoData videoData, string directorioSalida)
         {
             throw new NotImplementedException();
         }
