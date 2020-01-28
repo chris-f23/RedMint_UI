@@ -17,8 +17,8 @@ namespace RedMint_UI
     interface IDownloadController
     {
         VideoData BuscarVideo(string url);
-        VideoDownloader DescargarVideo(VideoData videoData, string directorioSalida);
-        VideoDownloader DescargarAudio(VideoData videoData, string directorioSalida);
+        VideoDownloader CrearDescargadorDeVideo(VideoData videoData, string directorioSalida);
+        VideoDownloader CrearDescargadorDeAudio(VideoData videoData, string directorioSalida);
     }
 
     public class DownloadController : IDownloadController
@@ -27,7 +27,7 @@ namespace RedMint_UI
         {
             try
             {
-                var videoInfos = DownloadUrlResolver.GetDownloadUrls(url, false);
+                var videoInfos = DownloadUrlResolver.GetDownloadUrls(url);
 
                 return new VideoData()
                 {
@@ -41,7 +41,7 @@ namespace RedMint_UI
             }
         }
 
-        public VideoDownloader DescargarAudio(VideoData videoData, string directorioSalida)
+        public VideoDownloader CrearDescargadorDeAudio(VideoData videoData, string directorioSalida)
         {
             // https://github.com/flagbug/YoutubeExtractor/issues/246
             // AudioDownloader esta obsoleto.
@@ -71,9 +71,31 @@ namespace RedMint_UI
             }
         }
 
-        public VideoDownloader DescargarVideo(VideoData videoData, string directorioSalida)
+        public VideoDownloader CrearDescargadorDeVideo(VideoData videoData, string directorioSalida)
         {
-            throw new NotImplementedException();
+            try
+            {
+                VideoInfo link = videoData.LinksDisponibles
+                    .Where(info => info.VideoType == VideoType.Mp4 && info.Resolution == 360)
+                //  .OrderByDescending(info => info.Resolution)
+                    .First();
+
+                // Desencriptar de ser necesario.
+                if (link.RequiresDecryption)
+                {
+                    DownloadUrlResolver.DecryptDownloadUrl(link);
+                }
+
+                // Crear el descargador.
+                var directorioFinal = Path.Combine(directorioSalida, link.Title + link.VideoExtension);
+                var videoDownloader = new VideoDownloader(link, directorioFinal);
+
+                return videoDownloader;
+            }
+            catch (Exception)
+            {
+                throw;
+            }
         }
     }
 }

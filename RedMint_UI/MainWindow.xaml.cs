@@ -12,6 +12,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using YoutubeExtractor;
 
 namespace RedMint_UI
 {
@@ -98,7 +99,26 @@ namespace RedMint_UI
                     try
                     {
                         btn_descargar.IsEnabled = false;
-                        await DescargarAudio();
+
+                        var audioDownloader = downloadController.CrearDescargadorDeAudio(this.data, input_directorio_salida.Text);
+                        await Descargar(audioDownloader);
+                        
+                        ShowSuccessMessage("Descarga completada!");
+                    }
+                    catch (Exception)
+                    {
+                        ShowErrorMessage("Ocurrio un error al descargar el video...");
+                    }
+
+                    break;
+                case Formato.Video:
+                    try
+                    {
+                        btn_descargar.IsEnabled = false;
+                        
+                        var videoDownloader = downloadController.CrearDescargadorDeVideo(this.data, input_directorio_salida.Text);
+                        await Descargar(videoDownloader);
+
                         ShowSuccessMessage("Descarga completada!");
                     }
                     catch (Exception)
@@ -116,13 +136,11 @@ namespace RedMint_UI
             tb_video_title.Text = string.Empty;
         }
 
-        private async Task DescargarAudio()
+        private async Task Descargar(VideoDownloader videoDownloader)
         {
-            var videoDownloader = downloadController.DescargarAudio(this.data, input_directorio_salida.Text);
-
             var progress = new Progress<int>(value => pgb_progress.Value = value);
             videoDownloader.DownloadProgressChanged += (sender, args) => UpdateProgressBar(progress, args.ProgressPercentage);
-            
+
             await Task.Run(() => videoDownloader.Execute());
         }
 
