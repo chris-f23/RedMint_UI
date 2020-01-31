@@ -15,15 +15,14 @@ using System.Windows.Shapes;
 using YoutubeExtractor;
 
 namespace RedMint_UI
-{
-    /// <summary>
-    public enum Calidad { Alta, Media, Baja }
-    public enum Formato { Audio, Video }
-    
+{    
+    /// <summary>    
     /// Interaction logic for MainWindow.xaml
     /// </summary>
     public partial class MainWindow : Window
     {
+        public enum Formato { Audio, Video }
+
         private VideoData data;
         private IDownloadController downloadController;
 
@@ -39,13 +38,14 @@ namespace RedMint_UI
             input_direccion.Text = string.Empty;
             input_directorio_salida.Text = Environment.GetFolderPath(Environment.SpecialFolder.Desktop);
 
-            // Comboboxes:
-            // cbb_calidad.ItemsSource = Enum.GetValues(typeof(Calidad));
+            // Combobox:
             cbb_formato.ItemsSource = Enum.GetValues(typeof(Formato));
+
             cbb_formato.SelectedIndex = 0;
 
             // Progressbar:
-            pgb_progress.Value = 100;
+            tb_progress.Text = string.Empty;
+            pgb_progress.Value = 0;
 
             // Textbox:
             tb_video_title.Text = string.Empty;
@@ -80,19 +80,22 @@ namespace RedMint_UI
         {
             this.data = downloadController.BuscarVideo(input_direccion.Text);
 
-            if (data != null)
+            if (data == null)
             {
-                tb_video_title.Text = data.Titulo;
-                btn_descargar.IsEnabled = true;
-            }
-            else {
                 ShowErrorMessage("No se encontro el video con la direccion ingresada.");
-                input_direccion.Text = string.Empty;
+                return;
             }
+
+            tb_progress.Text = string.Empty;
+            pgb_progress.Value = 0;
+
+            tb_video_title.Text = data.Titulo;
+            btn_descargar.IsEnabled = true;
         }
 
         private async void btn_descargar_ClickAsync(object sender, RoutedEventArgs e)
         {
+            var errorMsg = "Ocurrio un error al descargar el video...";
             switch ((Formato) cbb_formato.SelectedValue)
             {
                 case Formato.Audio:
@@ -105,9 +108,9 @@ namespace RedMint_UI
                         
                         ShowSuccessMessage("Descarga completada!");
                     }
-                    catch (Exception)
+                    catch (Exception exc)
                     {
-                        ShowErrorMessage("Ocurrio un error al descargar el video...");
+                        ShowErrorMessage(string.Format("{0}\n\n{1}", errorMsg, exc.Message));
                     }
 
                     break;
@@ -121,9 +124,9 @@ namespace RedMint_UI
 
                         ShowSuccessMessage("Descarga completada!");
                     }
-                    catch (Exception)
+                    catch (Exception exc)
                     {
-                        ShowErrorMessage("Ocurrio un error al descargar el video...");
+                        ShowErrorMessage(string.Format("{0}\n\n{1}", errorMsg, exc.Message));
                     }
 
                     break;
@@ -138,15 +141,19 @@ namespace RedMint_UI
 
         private async Task Descargar(VideoDownloader videoDownloader)
         {
-            var progress = new Progress<int>(value => pgb_progress.Value = value);
-            videoDownloader.DownloadProgressChanged += (sender, args) => UpdateProgressBar(progress, args.ProgressPercentage);
+            var progress = new Progress<float>(value => UpdateProgressView(value));
+            
+            videoDownloader.DownloadProgressChanged += 
+                (sender, args) => ((IProgress<float>)progress).Report((float)args.ProgressPercentage);
 
             await Task.Run(() => videoDownloader.Execute());
         }
 
-        private void UpdateProgressBar(Progress<int> progress, double value)
+        private void UpdateProgressView(float value)
         {
-            ((IProgress<int>)progress).Report((int) value);
+            value = MathF.Round(value, 1);
+            pgb_progress.Value = value;
+            tb_progress.Text = string.Concat(value, "%");
         }
 
         private void ShowErrorMessage(string message)
@@ -156,7 +163,7 @@ namespace RedMint_UI
 
         private void ShowSuccessMessage(string message)
         {
-            MessageBox.Show(message, "Informacion", MessageBoxButton.OK, MessageBoxImage.Information);
+            MessageBox.Show(message, "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
         }
     }
 }
