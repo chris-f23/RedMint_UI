@@ -7,11 +7,31 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="icons8-abrir-carpeta-26.png" />
+    <None Remove="icons8-base-de-datos-32.png" />
+    <None Remove="icons8-carpeta-32.png" />
+    <None Remove="icons8-descargar-32.png" />
+    <None Remove="icons8-símbolo-vaciar-32.png" />
+  </ItemGroup>
+
+  <ItemGroup>
     <PackageReference Include="WPFFolderBrowser" Version="1.0.2" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\YoutubeExtractor\YoutubeExtractor.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Resources\" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Resource Include="icons8-abrir-carpeta-26.png" />
+    <Resource Include="icons8-base-de-datos-32.png" />
+    <Resource Include="icons8-carpeta-32.png" />
+    <Resource Include="icons8-descargar-32.png" />
+    <Resource Include="icons8-símbolo-vaciar-32.png" />
   </ItemGroup>
 
 </Project>

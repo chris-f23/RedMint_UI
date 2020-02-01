@@ -86,55 +86,61 @@ namespace RedMint_UI
                 return;
             }
 
+            // Mostrar el titulo del video.
+            tb_video_title.Text = data.Titulo;
+
+            // Desactivar el boton de busqueda y activar el boton de descarga.
+            btn_buscar.IsEnabled = false;
+            btn_descargar.IsEnabled = true;
+
+            // Resetear la vista del progreso de descarga.
             tb_progress.Text = string.Empty;
             pgb_progress.Value = 0;
 
-            tb_video_title.Text = data.Titulo;
-            btn_descargar.IsEnabled = true;
         }
 
         private async void btn_descargar_ClickAsync(object sender, RoutedEventArgs e)
         {
             var errorMsg = "Ocurrio un error al descargar el video...";
-            switch ((Formato) cbb_formato.SelectedValue)
+
+            // Desactivar el boton de descarga.
+            btn_descargar.IsEnabled = false;
+
+            // Descargar:
+            // Crea un descargador dependiendo del formato seleccionado, y luego realiza la descarga. 
+            try
             {
-                case Formato.Audio:
-                    try
-                    {
-                        btn_descargar.IsEnabled = false;
+                VideoDownloader downloader = null;
 
-                        var audioDownloader = downloadController.CrearDescargadorDeAudio(this.data, input_directorio_salida.Text);
-                        await Descargar(audioDownloader);
-                        
-                        ShowSuccessMessage("Descarga completada!");
-                    }
-                    catch (Exception exc)
-                    {
-                        ShowErrorMessage(string.Format("{0}\n\n{1}", errorMsg, exc.Message));
-                    }
+                switch ((Formato)cbb_formato.SelectedValue)
+                {
+                    case Formato.Audio:
+                        downloader = downloadController.CrearDescargadorDeAudio(this.data, input_directorio_salida.Text);
 
-                    break;
-                case Formato.Video:
-                    try
-                    {
-                        btn_descargar.IsEnabled = false;
-                        
-                        var videoDownloader = downloadController.CrearDescargadorDeVideo(this.data, input_directorio_salida.Text);
-                        await Descargar(videoDownloader);
+                        break;
+                    case Formato.Video:
+                        downloader = downloadController.CrearDescargadorDeVideo(this.data, input_directorio_salida.Text);
 
-                        ShowSuccessMessage("Descarga completada!");
-                    }
-                    catch (Exception exc)
-                    {
-                        ShowErrorMessage(string.Format("{0}\n\n{1}", errorMsg, exc.Message));
-                    }
+                        break;
+                    default:
+                        ShowErrorMessage("Error, formato no seleccionado.");
+                        return;
+                }
 
-                    break;
-                default:
-                    ShowErrorMessage("Error, formato no seleccionado.");
-                    return;
+                await Descargar(downloader);
+
+                ShowSuccessMessage("Descarga completada!");
+            }
+            catch (Exception exc)
+            {
+                // Al ocurrir un error, mostrar el error a traves de un mensaje.
+                ShowErrorMessage(string.Format("{0}\n\n{1}", errorMsg, exc.Message));
             }
 
+            // Una vez termina la descarga, se activa el boton de busqueda.
+            btn_buscar.IsEnabled = true;
+
+            // Se elimina la data asociada (excepto por la URL).
             this.data = null;
             tb_video_title.Text = string.Empty;
         }
@@ -164,6 +170,15 @@ namespace RedMint_UI
         private void ShowSuccessMessage(string message)
         {
             MessageBox.Show(message, "Aviso", MessageBoxButton.OK, MessageBoxImage.Information);
+        }
+
+        private void btn_vaciar_Click(object sender, RoutedEventArgs e)
+        {
+            input_direccion.Text = string.Empty;
+            btn_buscar.IsEnabled = true;
+            btn_descargar.IsEnabled = false;
+            this.data = null;
+            tb_video_title.Text = string.Empty;
         }
     }
 }
