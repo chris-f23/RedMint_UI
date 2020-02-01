@@ -5,7 +5,7 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:RedMint_UI"
         mc:Ignorable="d"
-        Title="RedMint" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal" SizeToContent="WidthAndHeight" FontFamily="Product Sans">
+        Title="RedMint" ResizeMode="NoResize" WindowStartupLocation="CenterScreen" FontWeight="Normal" SizeToContent="WidthAndHeight" FontFamily="Product Sans" Icon="icons8-hoja-96 (1).png">
 
     <Window.Resources>
         <Style x:Key="RedButton" TargetType="TextBlock">
@@ -35,11 +35,11 @@
 
         <!-- Seleccion de Formato -->
         <Label x:Name="lbl_formato" Content="Formato:" Margin="20,143,380,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
-        <ComboBox x:Name="cbb_formato" HorizontalAlignment="Left" Margin="20,173,0,0" VerticalAlignment="Top" Width="80" FontSize="16" Height="28"/>
+        <ComboBox x:Name="cbb_formato" HorizontalAlignment="Left" Margin="20,173,0,0" VerticalAlignment="Top" Width="80" FontSize="16" Height="28" FontFamily="Lato"/>
 
         <!-- Seleccion del Directorio de Salida -->
         <Label x:Name="lbl_directorio_salida" Content="Directorio de salida:" Margin="116,143,213,0" VerticalAlignment="Top" Foreground="#FFF1F1F1" FontStretch="Normal" FontWeight="Thin" FontStyle="Normal" FontFamily="Lato" FontSize="16" Height="30"/>
-        <TextBox x:Name="input_directorio_salida" Margin="116,173,0,0" Text="C:\Users\Usuario\Desktop" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="419" FontFamily="Lato" FontSize="16" MaxLines="1" Height="28" SelectionBrush="Red" IsReadOnly="True"/>
+        <TextBox x:Name="input_directorio_salida" Margin="116,173,0,0" Text="C:\Users\Usuario\Desktop" TextWrapping="Wrap" VerticalAlignment="Top" HorizontalAlignment="Left" Width="419" FontFamily="Lato" FontSize="16" MaxLines="1" Height="28" SelectionBrush="Red" IsReadOnly="True" IsEnabled="False"/>
         <Button x:Name="btn_directorio_salida" Margin="0,173,20,0" VerticalAlignment="Top" FontFamily="Lato" Click="btn_directorio_salida_Click" HorizontalAlignment="Right" Width="40" FontSize="16" Height="28">
             <Image Source="icons8-carpeta-32.png" Stretch="Uniform" Width="20" Height="20" HorizontalAlignment="Center" VerticalAlignment="Center" />
         </Button>
